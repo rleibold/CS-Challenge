@@ -1,4 +1,4 @@
 .idea/
-ConsoleApp1/bin/
-ConsoleApp1/obj/
+bin/
+obj/
 .DS_Store

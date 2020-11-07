@@ -21,6 +21,7 @@ namespace JokeGeneratorTest
             Assert.IsTrue(jokes[0].Contains(firstName) && jokes[0].Contains(lastName));
         }
 
+        [Ignore]
         [TestMethod]
         public void GetCategoriesTestHappyPath()
         {

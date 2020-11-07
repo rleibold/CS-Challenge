@@ -6,7 +6,7 @@ namespace JokeGeneratorTest
     [TestClass]
     public class ConsolePrinterTest1
     {
-        private const string printValueTestValue = "Test123";       
+        private const string printValueTestValue = "Test123";    
         
         [TestMethod]
         public void TestSetAndReturnConsolePrinter()

@@ -8,19 +8,19 @@ using Newtonsoft.Json;
 
 namespace ConsoleApp1
 {
-    class JsonFeed
+    public class JsonFeed // Updated to public to allow for unit testing
     {
-        static string _url = "";
+        static string _url = ""; // TODO - Should not be static, should be private
 
         public JsonFeed() { }
-        public JsonFeed(string endpoint, int results)
+        public JsonFeed(string endpoint, int results) //TODO Extra parameter in constructor to be removed or implemented
         {
             _url = endpoint;
         }
         
-		public static string[] GetRandomJokes(string firstname, string lastname, string category)
+		public static string[] GetRandomJokes(string firstname, string lastname, string category) // TODO- Does not need to be static
 		{
-			HttpClient client = new HttpClient();
+			HttpClient client = new HttpClient(); // TODO - this could be injected into the constructor in order to help with mocking?
 			client.BaseAddress = new Uri(_url);
 			string url = "jokes/random";
 			if (category != null)
@@ -32,7 +32,7 @@ namespace ConsoleApp1
 				url += category;
 			}
 
-            string joke = Task.FromResult(client.GetStringAsync(url).Result).Result;
+            string joke = Task.FromResult(client.GetStringAsync(url).Result).Result; // TODO - redundant call to Result
 
             if (firstname != null && lastname != null)
             {
@@ -50,16 +50,19 @@ namespace ConsoleApp1
         /// </summary>
         /// <param name="client2"></param>
         /// <returns></returns>
-		public static dynamic Getnames()
+		public static dynamic Getnames() // TODO Does not need to be static, loosely typed return object could be error prone
 		{
+			// TODO Implement using: https://www.names.privserv.com/api/
+			// This method should not be part of this class and should be in it's own class
 			HttpClient client = new HttpClient();
 			client.BaseAddress = new Uri(_url);
 			var result = client.GetStringAsync("").Result;
 			return JsonConvert.DeserializeObject<dynamic>(result);
 		}
 
-		public static string[] GetCategories()
+		public static string[] GetCategories() // TODO Does not need to be static
 		{
+			// TODO - this method does not work correctly - needs to be fixed with /jokes/categories appended to url
 			HttpClient client = new HttpClient();
 			client.BaseAddress = new Uri(_url);
 

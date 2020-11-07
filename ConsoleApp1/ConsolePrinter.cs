@@ -10,9 +10,9 @@ namespace ConsoleApp1
 {
     public class ConsolePrinter
     {
-        public static object PrintValue;
+        public static object PrintValue; // TODO Should not be public and static, and add getter and setter methods
 
-        public ConsolePrinter Value(string value)
+        public ConsolePrinter Value(string value) // TODO Refactor this method to be immutable instance
         {
             PrintValue = value;
             return this;

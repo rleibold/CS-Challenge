@@ -26,6 +26,7 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            // Refactor this method be more modular and easier to unit test
             while (true)
             {
                 string category = null;

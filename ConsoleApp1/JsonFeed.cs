@@ -11,7 +11,8 @@ namespace ConsoleApp1
     public class JsonFeed // Updated to public to allow for unit testing
     {
 	    // TODO - Should not be static, and should be private, this will cause issues for multiple instances
-	    // running in the same application as they will all share the same _url variable  
+	    // of JsonFeed running in the same application as they will all share the same _url variable 
+	    // Not Thread safe
 	    static string _url = "";  
 
         public JsonFeed() { }

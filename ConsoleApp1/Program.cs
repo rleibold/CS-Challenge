@@ -2,63 +2,73 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1.Services;
 using Newtonsoft.Json;
+
 
 namespace ConsoleApp1
 {
     class Program
     {
+        private const string chuckNorrisApiBaseUrl = "https://api.chucknorris.io";
+        private const string namePrivServApiBaseUrl = "https://names.privserv.com/api/";
+        
         static string[] results = new string[50];
         static char key;
         static Tuple<string, string> names;
         static ConsolePrinter printer = new ConsolePrinter();
+        private static HttpClient httpClient = new HttpClient();
+        private static JokeGeneratorService jokeGeneratorService = new JokeGeneratorService(httpClient, chuckNorrisApiBaseUrl, namePrivServApiBaseUrl);
 
         static void Main(string[] args)
         {
-            printer.Value("Press ? to get instructions.").ToString();
-            if (Console.ReadLine() == "?")
+            while (true)
             {
-                while (true)
+                string category = null;
+                int numberOfJokes = 1;
+                
+                printer.Value("Press ? to get instructions.").ToString();
+                GetEnteredKey(Console.ReadKey());
+                if (key == '?')
                 {
                     printer.Value("Press c to get categories").ToString();
                     printer.Value("Press r to get random jokes").ToString();
-                    GetEnteredKey(Console.ReadKey());
-                    if (key == 'c')
-                    {
-                        getCategories();
-                        PrintResults();
-                    }
-                    if (key == 'r')
-                    {
-                        printer.Value("Want to use a random name? y/n").ToString();
-                        GetEnteredKey(Console.ReadKey());
-                        if (key == 'y')
-                            GetNames();
-                        printer.Value("Want to specify a category? y/n").ToString();
-                        if (key == 'y')
-                        {
-                            printer.Value("How many jokes do you want? (1-9)").ToString();
-                            int n = Int32.Parse(Console.ReadLine());
-                            printer.Value("Enter a category;").ToString();
-                            GetRandomJokes(Console.ReadLine(), n);
-                            PrintResults();
-                        }
-                        else
-                        {
-                            printer.Value("How many jokes do you want? (1-9)").ToString();
-                            int n = Int32.Parse(Console.ReadLine());
-                            GetRandomJokes(null, n);
-                            PrintResults();
-                        }
-                    }
-                    names = null;
                 }
+                else if (key == 'c')
+                {
+                    PrintResult(jokeGeneratorService.GetCategoriesAsString());
+                }
+                else if (key == 'r')
+                {
+                    printer.Value("Want to use a random name? y/n").ToString();
+                    GetEnteredKey(Console.ReadKey());
+                    if (key == 'y')
+                        GetNames();
+                    printer.Value("Want to specify a category? y/n").ToString();
+                    if (key == 'y')
+                    {
+                        printer.Value("Enter a category;").ToString();
+                        category = Console.ReadLine();
+                    }
+                    
+                    printer.Value("How many jokes do you want? (1-9)").ToString();
+                    numberOfJokes = Int32.Parse(Console.ReadLine());
+                    PrintResult(jokeGeneratorService.GetRandomJoke(names?.Item1, names?.Item2, category));
+                }
+                names = null;
             }
 
         }
 
+        private static void PrintResult(string output)
+        {
+            Console.WriteLine(output);
+        }
+        
+        [Obsolete("PrintResults() is deprecated.  Please use PrintResult() method.")]
         private static void PrintResults()
         {
             printer.Value("[" + string.Join(",", results) + "]").ToString();
@@ -106,24 +116,26 @@ namespace ConsoleApp1
                     break;
             }
         }
-
+        
         private static void GetRandomJokes(string category, int number)
         {
-            new JsonFeed("https://api.chucknorris.io", number);
-            results = JsonFeed.GetRandomJokes(names?.Item1, names?.Item2, category);
+            
+            PrintResult(jokeGeneratorService.GetRandomJoke(names?.Item1, names?.Item2, category));
         }
 
+        [Obsolete("getCategories() is obsolete.  Use JokeGeneratorService.GetCategoriesAsString()")]
         private static void getCategories()
         {
             new JsonFeed("https://api.chucknorris.io", 0);
             results = JsonFeed.GetCategories();
         }
-
+        
         private static void GetNames()
         {
             new JsonFeed("https://www.names.privserv.com/api/", 0);
             dynamic result = JsonFeed.Getnames();
-            names = Tuple.Create(result.name.ToString(), result.surname.ToString());
+            var namePrivServNameDto = jokeGeneratorService.GetRandomName();
+            names = Tuple.Create(namePrivServNameDto.name, namePrivServNameDto.surname); // TODO - This shouldn't be using a static variable like this
         }
     }
 }

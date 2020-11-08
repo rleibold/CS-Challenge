@@ -41,10 +41,21 @@ namespace ConsoleApp1.Services
             var chuckNorrisIoCategoriesDto = chuckNorrisIoApiClient.GetCategoriesAPI();
             return chuckNorrisIoCategoriesDto.categoryList;
         }
-        
-        public string GetRandomName()
+
+        public string GetCategoriesAsString()
         {
-            var namePrivServNameDTO =  namePrivServApiClient.GetNameAPI();
+            var categoriesList = GetCategories();
+            return string.Join(", ", categoriesList);
+        }
+
+        public NamePrivServNameDTO GetRandomName()
+        {
+            return namePrivServApiClient.GetNameAPI();
+        }
+        
+        public string GetRandomNameAsString()
+        {
+            var namePrivServNameDTO = GetRandomName();
             return namePrivServNameDTO.name + " " + namePrivServNameDTO.surname;
         }
     }

@@ -30,25 +30,31 @@ namespace ConsoleApp1
                 string category = null;
                 int numberOfJokes = 1;
                 
-                printer.Value("Press ? to get instructions.").ToString();
+                PrintResult("Press Spacebar to get instructions.");
                 GetEnteredKey(Console.ReadKey());
-                if (key == '?')
+                if (key.Equals(' '))
                 {
-                    printer.Value("Press c to get categories").ToString();
-                    printer.Value("Press r to get random jokes").ToString();
+                    PrintResult("Press c to get categories");
+                    PrintResult("Press r to get random jokes");
+                    PrintResult("Press q to Quit.");
                 }
-                else if (key == 'c')
+                else if (key.Equals('q'))
+                {
+                    break;
+                }
+                else if (key.Equals('c'))
                 {
                     PrintResult(jokeGeneratorService.GetCategoriesAsString());
                 }
-                else if (key == 'r')
+                else if (key.Equals('r'))
                 {
                     printer.Value("Want to use a random name? y/n").ToString();
                     GetEnteredKey(Console.ReadKey());
-                    if (key == 'y')
+                    if (key.Equals('y'))
                         GetNames();
                     printer.Value("Want to specify a category? y/n").ToString();
-                    if (key == 'y')
+                    GetEnteredKey(Console.ReadKey());
+                    if (key.Equals('y'))
                     {
                         printer.Value("Enter a category;").ToString();
                         category = Console.ReadLine();
@@ -56,11 +62,12 @@ namespace ConsoleApp1
                     
                     printer.Value("How many jokes do you want? (1-9)").ToString();
                     numberOfJokes = Int32.Parse(Console.ReadLine());
-                    PrintResult(jokeGeneratorService.GetRandomJoke(names?.Item1, names?.Item2, category));
+                    GetRandomJokes(category, numberOfJokes);
                 }
                 names = null;
             }
 
+            PrintResult("Goodbye...");
         }
 
         private static void PrintResult(string output)
@@ -76,6 +83,7 @@ namespace ConsoleApp1
 
         private static void GetEnteredKey(ConsoleKeyInfo consoleKeyInfo)
         {
+            PrintResult(""); // Add a cariage return after user input
             switch (consoleKeyInfo.Key)
             {
                 case ConsoleKey.C:
@@ -86,6 +94,9 @@ namespace ConsoleApp1
                     break;
                 case ConsoleKey.D1:
                     key = '1';
+                    break;
+                case ConsoleKey.D2:
+                    key = '2';
                     break;
                 case ConsoleKey.D3:
                     key = '3';
@@ -114,13 +125,24 @@ namespace ConsoleApp1
                 case ConsoleKey.Y:
                     key = 'y';
                     break;
+                case ConsoleKey.N:
+                    key = 'n';
+                    break;
+                case ConsoleKey.Spacebar:
+                    key = ' ';
+                    break;
+                case ConsoleKey.Q:
+                    key = 'q';
+                    break;
             }
         }
         
         private static void GetRandomJokes(string category, int number)
         {
-            
-            PrintResult(jokeGeneratorService.GetRandomJoke(names?.Item1, names?.Item2, category));
+            for (int i = 0; i < number; i++)
+            {
+                PrintResult(jokeGeneratorService.GetRandomJoke(names?.Item1, names?.Item2, category));    
+            }
         }
 
         [Obsolete("getCategories() is obsolete.  Use JokeGeneratorService.GetCategoriesAsString()")]

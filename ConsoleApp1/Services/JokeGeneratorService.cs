@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using ConsoleApp1.ApiClients.ChuckNorrisIoApiClient;
 using ConsoleApp1.ApiClients.NamePrivServApiClient;
@@ -33,6 +34,18 @@ namespace ConsoleApp1.Services
             {
                 return jokeString;
             }
+        }
+
+        public List<string> GetCategories()
+        {
+            var chuckNorrisIoCategoriesDto = chuckNorrisIoApiClient.GetCategoriesAPI();
+            return chuckNorrisIoCategoriesDto.categoryList;
+        }
+        
+        public string GetRandomName()
+        {
+            var namePrivServNameDTO =  namePrivServApiClient.GetNameAPI();
+            return namePrivServNameDTO.name + " " + namePrivServNameDTO.surname;
         }
     }
 }

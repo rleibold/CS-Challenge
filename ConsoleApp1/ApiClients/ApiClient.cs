@@ -24,7 +24,7 @@ namespace ConsoleApp1.ApiClients
             this.baseUrl = baseUrl;
         }
 
-        public string MakeGetApiCall(string specificURLAndParameters = "")
+        protected string MakeGetApiCall(string specificURLAndParameters = "")
         {
             return this.httpClient.GetStringAsync(this.baseUrl + specificURLAndParameters).Result;
         }

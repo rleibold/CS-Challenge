@@ -13,6 +13,7 @@ namespace JokeGeneratorTest.Services
         private const string lastname = "Leibold";
         private const string chuckNorrisName = "Chuck Norris";
 
+        // TODO - Add test coverage for GetCategories() and GetRandomName() methods
         
         [TestMethod]
         public void GetRandomJokeAPIWithFirstAndLastNameNoCategoryTest() 

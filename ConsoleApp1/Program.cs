@@ -16,6 +16,7 @@ namespace ConsoleApp1
         private const string chuckNorrisApiBaseUrl = "https://api.chucknorris.io";
         private const string namePrivServApiBaseUrl = "https://names.privserv.com/api/";
         
+        // TODO - refactor to remove all static variables
         static string[] results = new string[50];
         static char key;
         static Tuple<string, string> names;
@@ -81,8 +82,11 @@ namespace ConsoleApp1
             printer.Value("[" + string.Join(",", results) + "]").ToString();
         }
 
+        
         private static void GetEnteredKey(ConsoleKeyInfo consoleKeyInfo)
         {
+            // TODO - refactor to remove use of ConsoleKeyInfo as does not support all charaters and
+            // adds unnecessary complexity
             PrintResult(""); // Add a cariage return after user input
             switch (consoleKeyInfo.Key)
             {
@@ -154,10 +158,8 @@ namespace ConsoleApp1
         
         private static void GetNames()
         {
-            new JsonFeed("https://www.names.privserv.com/api/", 0);
-            dynamic result = JsonFeed.Getnames();
             var namePrivServNameDto = jokeGeneratorService.GetRandomName();
-            names = Tuple.Create(namePrivServNameDto.name, namePrivServNameDto.surname); // TODO - This shouldn't be using a static variable like this
+            names = Tuple.Create(namePrivServNameDto.name, namePrivServNameDto.surname); // TODO - This shouldn't be using static variable names like this
         }
     }
 }

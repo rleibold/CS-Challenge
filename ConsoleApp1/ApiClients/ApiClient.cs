@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 
@@ -26,7 +27,14 @@ namespace ConsoleApp1.ApiClients
 
         protected string MakeGetApiCall(string specificURLAndParameters = "")
         {
-            return this.httpClient.GetStringAsync(this.baseUrl + specificURLAndParameters).Result;
+            try
+            {
+                return this.httpClient.GetStringAsync(this.baseUrl + specificURLAndParameters).Result;
+            }
+            catch (Exception ex)
+            {
+                return "{}"; // TODO - properly log this exception
+            }
         }
         
     }

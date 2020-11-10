@@ -21,7 +21,7 @@ Your task as a professional developer is to clean up this app and make it someth
 - select ‘c’ option to see all categories crashes the application - **FIXED**
 - no way for user to exit the application gracefully - **FIXED**
 - line ending does not show correctly so options the user has entered show up next to text prompting user for information - **FIXED**
-- incorrect category results in the application crashing - **OUTSTANDING**
+- incorrect category results in the application crashing - **FIXED**
 
 ### Improvements:
 - Refactored and deprecated all methods in ConsolePrinter.cs as the implementation was unnecessary and static variable PrintValue was not thread-safe and error prone
